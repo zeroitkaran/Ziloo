@@ -1,0 +1,6 @@
+framework module Pods_MusicTok_MusicTokUITests {
+  umbrella header "Pods-MusicTok-MusicTokUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}
