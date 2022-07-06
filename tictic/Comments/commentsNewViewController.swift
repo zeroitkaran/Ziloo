@@ -60,7 +60,7 @@ class commentsNewViewController: UIViewController,UITableViewDelegate,UITableVie
         newGetComments()
         loaderView.type = .lineSpinFadeLoader
         loaderView.backgroundColor = .clear
-        loaderView.color = #colorLiteral(red: 1, green: 0.5223166943, blue: 0, alpha: 1)
+        loaderView.color = #colorLiteral(red: 0.8039215686, green: 0.08235294118, blue: 0.368627451, alpha: 1)
         
         loaderView.startAnimating()
         
@@ -264,7 +264,7 @@ class commentsNewViewController: UIViewController,UITableViewDelegate,UITableVie
                     self.loaderView.stopAnimating()
                     for Dict in allComments {
                         let commentsDict = Dict["VideoComment"] as! NSDictionary
-                        let vidDict = Dict["Video"] as! NSDictionary
+                        let vidDict = Dict["Video"] as? NSDictionary
                         let replyDict = Dict["VideoCommentReply"] as! [[String:Any]]
                         let userDict = Dict["User"] as! NSDictionary
                         
@@ -424,14 +424,14 @@ class commentsNewViewController: UIViewController,UITableViewDelegate,UITableVie
         self.loaderView.startAnimating()
         ApiHandler.sharedInstance.postCommentOnVideo(user_id: UserDefaults.standard.string(forKey: "userID")!, comment: cmnt, video_id: self.video_id) { (isSuccess,response,err) in
             if isSuccess{
-                if response?.value(forKey: "code") as! NSNumber == 200 {
+                if response?.value(forKey: "code") as? NSNumber == 200 {
                     self.loaderView.stopAnimating()
                     var data = [String:Any]()
                     data = ["SelectedIndex":self.index,"Count":self.commentsArr.count]
                     NotificationCenter.default.post(name: Notification.Name("commentVideo"), object: data)
                     self.newGetComments()
                     print("Updated comments on server::,,,, done 200")
-                }else{
+                }else {
                     self.loaderView.stopAnimating()
                     print("!200: ",response?.value(forKey: "msg"))
                 }

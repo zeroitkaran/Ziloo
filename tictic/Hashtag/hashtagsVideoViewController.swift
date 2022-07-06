@@ -101,14 +101,12 @@ class hashtagsVideoViewController: UIViewController {
                         
                         let userID = userObj.value(forKey: "id") as! String
                         let username = userObj.value(forKey: "username") as! String
-                        let userOnline = userObj.value(forKey: "online") as! String
+                        let userOnline = userObj.value(forKey: "online") as? String
                         let userImg = userObj.value(forKey: "profile_pic") as! String
-                        //                        let followBtn = userObj.value(forKey: "button") as! String
+                        // let followBtn = userObj.value(forKey: "button") as! String
                         let verified = userObj.value(forKey: "verified")
-                        
-//                            let soundID = soundObj.value(forKey: "id") as? String
-//                            let soundName = soundObj.value(forKey: "name") as? String
-                        
+//                      let soundID = soundObj.value(forKey: "id") as? String
+//                      let soundName = soundObj.value(forKey: "name") as? String
                         
                         let video = videoMainMVC(videoID: videoID, videoUserID: "", fb_id: "", description: videoDesc, videoURL: videoUrl, videoTHUM: videoThum, videoGIF: videoGif, view: views, section: "", sound_id: "", privacy_type: "", allow_comments: allowComment, allow_duet: allowDuet, block: "", duet_video_id: "", old_video_id: "", created: created, like: like, favourite: "", comment_count: videoComments, like_count: videoLikes, followBtn: "", duetVideoID: "\(duetVidID!)", userID: userID, first_name: "", last_name: "", gender: "", bio: "", website: "", dob: "", social_id: "", userEmail: "", userPhone: "", password: "", userProfile_pic: "", role: "", username: username, social: "", device_token: "", videoCount: "", verified: "\(verified!)", soundName: "",CDPlayer: "")
                         
