@@ -13,7 +13,6 @@ import Alamofire
 
 var BASE_URL = "http://ziloo.live/"
 let API_KEY = "53aee794-c376-49f8-8df9-5df6e9668bee"
-//let profileQRLink = "https://\(BASE_URL)/profile/"
 let profileQRLink = BASE_URL+"profile/"
 let API_BASE_URL = BASE_URL+"api/"
 
@@ -21,7 +20,7 @@ let API_BASE_URL = BASE_URL+"api/"
 
 
 let headers: HTTPHeaders = [
-    "Api-Key":API_KEY
+    "Api-Key": API_KEY
 ]
 
 private let SharedInstance = ApiHandler()
@@ -80,8 +79,6 @@ enum Endpoint : String {
     case reportVideo             = "reportVideo"
     case blockUser               = "blockUser"
     case showSoundsAgainstSection   = "showSoundsAgainstSection"
-    
-    
     case purchaseCoin             = "purchaseCoin"
     case coinWorth                = "showCoinWorth"
     case coinWithDrawRequest      = "withdrawRequest"
@@ -92,6 +89,9 @@ enum Endpoint : String {
     case changePhoneNo            = "changePhoneNo"
     case changePassword           = "changePassword"
     case DeleteAccount            = "deleteUserAccount"
+    case likeComment              = "likeComment"
+    case changeEmailAddress       = "changeEmailAddress"
+    case verifyChangeEmailCode    = "verifyChangeEmailCode"
 
 
 }
@@ -455,9 +455,7 @@ class ApiHandler:NSObject{
         }
     }
     
-    
-    
-    //MARK:- Verify Phone number
+        //MARK:- Verify Phone number
     func verifyPhoneNo(phone:String,verify:String,completionHandler:@escaping( _ result:Bool, _ responseObject:NSDictionary?)->Void){
         let headers: HTTPHeaders = [
             "Api-Key":API_KEY,
@@ -465,12 +463,8 @@ class ApiHandler:NSObject{
         ]
         var parameters = [String : String]()
         parameters = [
-            
             "phone" : phone,
-            "verify": verify,
-            // "code"  : code,
-            
-            
+            "verify": verify
         ]
         let finalUrl = "\(self.baseApiPath!)\(Endpoint.verifyPhoneNo.rawValue)"
         
@@ -933,56 +927,51 @@ class ApiHandler:NSObject{
     //MARK:- postVideo
     
     //    IN POST VIEW CONTROLLER CODE MULTIPART
-    func postVideo(User_id :String ,completionHandler:@escaping( _ result:Bool, _ responseObject:NSDictionary?)->Void){
-        let headers: HTTPHeaders = [
-            "Api-Key":API_KEY,
-            "User-Id":User_id,
-            "device":deviceType
-        ]
-        let finalUrl = "\(self.baseApiPath!)\(Endpoint.postVideo.rawValue)"
-        print(finalUrl)
-        AF.request(URL.init(string: finalUrl)!, method: .post, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON { (response) in
-            print(response.result)
-            
-            switch response.result {
-            
-            case .success(_):
-                if let json = response.value
-                {
-                    do {
-                        let dict = json as? NSDictionary
-                        print(dict)
-                        completionHandler(true, dict)
-                        
-                    } catch {
-                        completionHandler(false, nil)
-                    }
-                }
-                break
-            case .failure(let error):
-                if let json = response.value
-                {
-                    do {
-                        let dict = json as? NSDictionary
-                        print(dict)
-                        completionHandler(true, dict)
-                        
-                    } catch {
-                        completionHandler(false, nil)
-                    }
-                }
-                break
-            }
-        }
-    }
+//    func postVideo(User_id :String ,completionHandler:@escaping( _ result:Bool, _ responseObject:NSDictionary?)->Void){
+//        let headers: HTTPHeaders = [
+//            "Api-Key": API_KEY,
+//            "User-Id": User_id,
+//            "device": deviceType
+//        ]
+//        let finalUrl = "\(self.baseApiPath!)\(Endpoint.postVideo.rawValue)"
+//        AF.request(URL.init(string: finalUrl)!, method: .post, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON { (response) in
+//            print(response.result)
+//
+//            switch response.result {
+//            
+//            case .success(_):
+//                if let json = response.value
+//                {
+//                    do {
+//                        let dict = json as? NSDictionary
+//                        print(dict)
+//                        completionHandler(true, dict)
+//
+//                    } catch {
+//                        completionHandler(false, nil)
+//                    }
+//                }
+//                break
+//            case .failure(let error):
+//                if let json = response.value
+//                {
+//                    do {
+//                        let dict = json as? NSDictionary
+//                        print(dict)
+//                        completionHandler(true, dict)
+//
+//                    } catch {
+//                        completionHandler(false, nil)
+//                    }
+//                }
+//                break
+//            }
+//        }
+//    }
     
     
     //MARK:-showRelatedVideos
     func showRelatedVideos(device_id:String,user_id:String,starting_point:String,completionHandler:@escaping( _ result:Bool, _ responseObject:NSDictionary?)->Void){
-    
-        
-        
-                
         let headers: HTTPHeaders = [
             "Api-Key"      : API_KEY,
             "user-id"      : user_id,
@@ -1103,6 +1092,8 @@ class ApiHandler:NSObject{
         var parameters = [String : String]()
         parameters = [
             "user_id"        : user_id,
+            "starting_point" : "0"
+            
             
         ]
         let finalUrl = "\(self.baseApiPath!)\(Endpoint.showVideosAgainstUserID.rawValue)"
@@ -1306,9 +1297,7 @@ class ApiHandler:NSObject{
         parameters = [
             "user_id"        : user_id,
             "video_id"       : video_id,
-            
-            
-        ]
+            ]
         let finalUrl = "\(self.baseApiPath!)\(Endpoint.likeVideo.rawValue)"
         
         print(finalUrl)
@@ -1404,7 +1393,7 @@ class ApiHandler:NSObject{
     func showSounds(user_id:String,starting_point:String,completionHandler:@escaping( _ result:Bool, _ responseObject:NSDictionary?)->Void){
         let headers: HTTPHeaders = [
             "Api-Key": API_KEY,
-            "device":deviceType
+            "device": deviceType
         ]
         var parameters = [String : String]()
         parameters = [
@@ -1758,14 +1747,17 @@ class ApiHandler:NSObject{
     }
     
     //MARK:-showVideoComments
-    func showVideoComments(video_id:String,completionHandler:@escaping( _ result:Bool, _ responseObject:NSDictionary?)->Void){
+    func showVideoComments(video_id:String,starting_point: String ,user_id: String ,completionHandler:@escaping( _ result:Bool, _ responseObject:NSDictionary?)->Void){
         let headers: HTTPHeaders = [
             "Api-Key": API_KEY,
             "device":deviceType
         ]
         var parameters = [String : String]()
         parameters = [
-            "video_id"    : video_id
+            "video_id"    : video_id,
+            "user_id"    : user_id,
+            "starting_point" : starting_point
+            
         ]
         let finalUrl = "\(self.baseApiPath!)\(Endpoint.showVideoComments.rawValue)"
         
@@ -1805,18 +1797,19 @@ class ApiHandler:NSObject{
             }
         }
     }
+    
     //MARK:- postCommentOnVideo
-    func postCommentOnVideo(user_id:String,comment:String,video_id:String,completionHandler:@escaping( _ result:Bool, _ responseObject:NSDictionary?,_ err:String)->Void){
+    func postCommentOnVideo(user_id: String,comment:String,video_id:String,completionHandler:@escaping( _ result:Bool, _ responseObject:NSDictionary?,_ err:String)->Void){
         let finalUrl = "\(self.baseApiPath!)\(Endpoint.postCommentOnVideo.rawValue)"
         let headers: HTTPHeaders = [
             "Api-Key": API_KEY,
-            "device":deviceType
+            "device": deviceType
         ]
         var parameters = [String : String]()
         parameters = [
-            "video_id"    : video_id,
-            "comment"    : comment,
-            "user_id"    : user_id
+            "video_id": video_id,
+            "comment": comment,
+            "user_id": user_id
         ]
         print(finalUrl)
         print(parameters)
@@ -3700,9 +3693,6 @@ class ApiHandler:NSObject{
             "verify"          : "0"
         ]
         let finalUrl = "\(self.baseApiPath!)\(Endpoint.changePhoneNo.rawValue)"
-        
-        print(finalUrl)
-        print(parameters)
         AF.request(URL.init(string: finalUrl)!, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).responseJSON { (response) in
             print(response.result)
             
