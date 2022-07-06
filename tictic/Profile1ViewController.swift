@@ -7,7 +7,7 @@ import FBSDKLoginKit
 import GoogleSignIn
 
 @available(iOS 13.0, *)
-class Profile1ViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout{
+class Profile1ViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,GIDSignInDelegate{
     
     @IBOutlet weak var inner_view: UIView!
     

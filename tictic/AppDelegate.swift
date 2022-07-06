@@ -58,7 +58,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,UNUserNotificationCenterDe
         StaticData.obj.BundleIdentifer = bundleIdentifier!
         IQKeyboardManager.shared.enable = true
         FirebaseApp.configure()
-        GIDSignIn.sharedInstance.clientID = FirebaseApp.app()?.options.clientID
+        GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
         AppUtility?.getIPAddress()
         
         
@@ -88,16 +88,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate,UNUserNotificationCenterDe
 //        }
         
         Messaging.messaging().token { token, error in
-            if let error = error {
-                print("Error fetching FCM registration token: \(error)")
-            } else if let token = token {
-                print("FCM registration token: \(token)")
-                AppUtility?.saveObject(obj: token, forKey: "DeviceToken")
+          if let error = error {
+            print("Error fetching FCM registration token: \(error)")
+          } else if let token = token {
+            print("FCM registration token: \(token)")
+              AppUtility?.saveObject(obj: token, forKey: "DeviceToken")
             }
         }
         
+        
+        
         application.registerForRemoteNotifications()
+        
         UserDefaults.standard.set("", forKey: "otherUserID")
+        
+        
+        
+        
         return true
     }
     
@@ -110,7 +117,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,UNUserNotificationCenterDe
             annotation: options[UIApplication.OpenURLOptionsKey.annotation]
         )
         
-        return GIDSignIn.sharedInstance.handle(url)  || handled
+        return GIDSignIn.sharedInstance().handle(url)  || handled
     }
     
     @available(iOS 13.0, *)
@@ -133,10 +140,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate,UNUserNotificationCenterDe
             // Perform any operations on signed in user here.
             let userId = user.userID                  // For client-side use only!
             let idToken = user.authentication.idToken // Safe to send to the server
-            let fullName = user.profile?.name
-            let givenName = user.profile?.givenName
-            let familyName = user.profile?.familyName
-            let email = user.profile?.email
+            let fullName = user.profile.name
+            let givenName = user.profile.givenName
+            let familyName = user.profile.familyName
+            let email = user.profile.email
             // ...
         } else {
             print("\(error.localizedDescription)")
@@ -160,6 +167,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate,UNUserNotificationCenterDe
         UserDefaults.standard.set(fcmToken, forKey:"DeviceToken")
         print("fcm firebase token notification: ",fcmToken)
     }
+    
+    
     
     
     func sign(_ signIn: GIDSignIn!, didDisconnectWith user: GIDGoogleUser!, withError error: Error!){

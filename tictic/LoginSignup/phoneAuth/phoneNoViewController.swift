@@ -215,9 +215,6 @@ class phoneNoViewController: UIViewController,UITextFieldDelegate,CNContactPicke
         }
     
     
-    
-    
-    
     @IBAction func btnPhoneAction(_ sender: Any) {
         btnEmailBottomView.isHidden = true
         btnEmail.setTitleColor(.black, for: .normal)
@@ -232,7 +229,6 @@ class phoneNoViewController: UIViewController,UITextFieldDelegate,CNContactPicke
     @IBAction func btnEmailAction(_ sender: Any) {
         btnPhoneBottomView.isHidden = true
         btnPhone.setTitleColor(.black, for: .normal)
-//        print(UserDefaults.standard.string(forKey: "signUpType"))
         if sign_loginType == "signUp"{
             emailSignupContainerVIEW.isHidden = false
         }else if sign_loginType == "signIn"{
@@ -274,7 +270,7 @@ class phoneNoViewController: UIViewController,UITextFieldDelegate,CNContactPicke
                     AppUtility?.stopLoader(view: self.view)
                     self.alertModule(title: NSLocalizedString("alert_app_name", comment: ""), msg: response?.value(forKey: "msg") as! String)
                 }
-            }else{
+            } else {
                 AppUtility?.stopLoader(view: self.view)
                 self.showToast(message: response?.value(forKey: "msg") as! String, font: .systemFont(ofSize: 12.0))
             }
@@ -283,25 +279,17 @@ class phoneNoViewController: UIViewController,UITextFieldDelegate,CNContactPicke
     
         //    MARK:- Terms & privacy
         @IBAction func privacy(_ sender: Any) {
-            
             let vc = storyboard?.instantiateViewController(withIdentifier: "termsCondVC") as! termsCondViewController
             vc.privacyDoc = true
             vc.modalPresentationStyle = .fullScreen
             present(vc, animated: true, completion: nil)
-    //        guard let url = URL(string: "https://termsfeed.com/privacy-policy/9a03bedc2f642faf5b4a91c68643b1ae") else { return }
-    //        UIApplication.shared.open(url)
         }
         
         @IBAction func terms(_ sender: Any) {
-            
             let vc = storyboard?.instantiateViewController(withIdentifier: "termsCondVC") as! termsCondViewController
             vc.privacyDoc = false
             vc.modalPresentationStyle = .fullScreen
             present(vc, animated: true, completion: nil)
-            
-    //        guard let url = URL(string: "https://termsfeed.com/terms-conditions/72b8fed5b38e082d48c9889e4d1276a9") else { return }
-    //        UIApplication.shared.open(url)
-            
         }
     
     @IBAction func btnBack(_ sender: Any) {
@@ -309,27 +297,27 @@ class phoneNoViewController: UIViewController,UITextFieldDelegate,CNContactPicke
     }
     
     @IBAction func btnTest(_ sender: Any) {
-       let countryController = CountryPickerWithSectionViewController.presentController(on: self)
-       { [weak self] (country: Country) in
-           
-           if let self = self
-           {
-//               self.countryImage.image = country.flag
-//               self.lblCountryCode.text = "\(country.dialingCode!)"
-            
-            print("country.dialingCode!: ",country.dialingCode!)
-           }
-           else
-           {
-               return
-           }
-           
-       }
+//       let countryController = CountryPickerWithSectionViewController.presentController(on: self)
+//       { [weak self] (country: Country) in
+//
+//           if let self = self
+//           {
+////               self.countryImage.image = country.flag
+////               self.lblCountryCode.text = "\(country.dialingCode!)"
+//
+//            print("country.dialingCode!: ",country.dialingCode!)
+//           }
+//           else
+//           {
+//               return
+//           }
+//
+//       }
        // can customize the countryPicker here e.g font and color
-       countryController.detailColor = #colorLiteral(red: 0.9568627451, green: 0.5490196078, blue: 0.01960784314, alpha: 1)
-        countryController.detailFont.withSize(9.0)
-        countryController.labelFont.withSize(9.0)
-        countryController.flagStyle = .circular
+//       countryController.detailColor = #colorLiteral(red: 0.9568627451, green: 0.5490196078, blue: 0.01960784314, alpha: 1)
+//        countryController.detailFont.withSize(9.0)
+//        countryController.labelFont.withSize(9.0)
+//        countryController.flagStyle = .circular
     }
     
     //    MARK:- ALERT MODULE

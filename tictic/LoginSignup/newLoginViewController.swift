@@ -268,7 +268,7 @@ class newLoginViewController: UIViewController, UITabBarControllerDelegate {
     }
 }
 @available(iOS 13.0, *)
-extension newLoginViewController {
+extension newLoginViewController:GIDSignInDelegate{
     
     func signInWillDispatch(signIn: GIDSignIn!, error: NSError!) {
         //UIActivityIndicatorView.stopAnimating()

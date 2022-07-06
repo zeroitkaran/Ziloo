@@ -66,7 +66,7 @@ class ProfileViewController: UIViewController,UICollectionViewDelegate,UICollect
        // GIDSignIn.sharedInstance().delegate = self
        // GIDSignIn.sharedInstance.presentingViewController = self
         
-        GIDSignIn.sharedInstance.presentingViewController = self
+        GIDSignIn.sharedInstance().presentingViewController = self
 
     }
     
@@ -663,15 +663,12 @@ class ProfileViewController: UIViewController,UICollectionViewDelegate,UICollect
     }
     
     @IBAction func GoogleLogin(_ sender: Any) {
-        
-      //  GIDSignIn.sharedInstance.sign
-        GIDSignIn.sharedInstance.restorePreviousSignIn()
+        GIDSignIn.sharedInstance().signIn()
     }
     
     
     
     func signInWillDispatch(signIn: GIDSignIn!, error: NSError!) {
-        //UIActivityIndicatorView.stopAnimating()
     }
     
     func signIn(signIn: GIDSignIn!,
@@ -687,17 +684,8 @@ class ProfileViewController: UIViewController,UICollectionViewDelegate,UICollect
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
         
         if (error == nil) {
-            // Perform any operations on signed in user here.
             self.GoogleApi(user: user)
-            
-            // ...
         } else {
-            
-            //            self.view.isUserInteractionEnabled = true
-            //            KRProgressHUD.dismiss {
-            //                print("dismiss() completion handler.")
-            //
-            //            }
             print("\(error.localizedDescription)")
         }
         

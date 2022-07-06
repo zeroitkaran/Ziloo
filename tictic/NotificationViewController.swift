@@ -6,7 +6,7 @@ import Alamofire
 import AuthenticationServices
 
 @available(iOS 13.0, *)
-class NotificationViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class NotificationViewController: UIViewController,GIDSignInDelegate,UITableViewDelegate,UITableViewDataSource {
     
     @IBOutlet weak var inner_view: UIView!
     
@@ -30,8 +30,8 @@ class NotificationViewController: UIViewController, UITableViewDelegate, UITable
         super.viewDidLoad()
         
         
-       /// GIDSignIn.sharedInstance.delegate = self
-        GIDSignIn.sharedInstance.presentingViewController = self
+        GIDSignIn.sharedInstance().delegate = self
+        GIDSignIn.sharedInstance()?.presentingViewController = self
         
         self.tableview.tableFooterView = UIView()
         
@@ -138,7 +138,7 @@ class NotificationViewController: UIViewController, UITableViewDelegate, UITable
         
         let sv = HomeViewController.displaySpinner(onView: self.view)
         
-        if(user.profile?.email == nil || user.userID == nil || user.profile?.email == "" || user.userID == ""){
+        if(user.profile.email == nil || user.userID == nil || user.profile.email == "" || user.userID == ""){
             
             
             
@@ -150,13 +150,13 @@ class NotificationViewController: UIViewController, UITableViewDelegate, UITable
             
             HomeViewController.removeSpinner(spinner: sv)
             //SliderViewController.removeSpinner(spinner: sv)
-            self.email = user.profile?.email
-            self.first_name = user.profile?.givenName
-            self.last_name = user.profile?.familyName
+            self.email = user.profile.email
+            self.first_name = user.profile.givenName
+            self.last_name = user.profile.familyName
             self.my_id = user.userID
-            if ((user.profile?.hasImage) != nil)
+            if user.profile.hasImage
             {
-                let pic = user.profile?.imageURL(withDimension: 100)
+                let pic = user.profile.imageURL(withDimension: 100)
                 self.profile_pic = pic!.absoluteString
                 
             }else{
@@ -551,7 +551,7 @@ class NotificationViewController: UIViewController, UITableViewDelegate, UITable
     
     @IBAction func GoogleLogin(_ sender: Any) {
         
-        GIDSignIn.sharedInstance.signIn()
+        GIDSignIn.sharedInstance().signIn()
     }
     
     
