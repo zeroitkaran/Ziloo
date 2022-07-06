@@ -8,7 +8,7 @@
 //MARK: Error Messages
 "alert_error_title" = "Error";
 "ok_button_title" = "OK";
-"alert_app_name" = "MusicTok";
+"alert_app_name" = "Ziloo";
 
 //MARK: Error Codes - Generic
 "error_400" = "Something went wrong";

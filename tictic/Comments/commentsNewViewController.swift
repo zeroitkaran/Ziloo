@@ -12,7 +12,7 @@ import Kingfisher
 import NVActivityIndicatorView
 import IQKeyboardManagerSwift
 
-class commentsNewViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate {
+class commentsNewViewController: UIViewController, UITableViewDelegate,UITableViewDataSource, UITextFieldDelegate {
     
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     var video_id = ""
@@ -56,7 +56,6 @@ class commentsNewViewController: UIViewController,UITableViewDelegate,UITableVie
         commentsTableView.estimatedRowHeight = 44.0
         commentsTableView.rowHeight = UITableView.automaticDimension
         commentsTableView.tableFooterView = UIView()
-//        getComents()
         newGetComments()
         loaderView.type = .lineSpinFadeLoader
         loaderView.backgroundColor = .clear
@@ -72,14 +71,9 @@ class commentsNewViewController: UIViewController,UITableViewDelegate,UITableVie
     
     
     func changeBackgroundAni() {
-//        let red   = CGFloat(211.0)
-//        let green = CGFloat(211.0)
-//        let blue  = CGFloat(211.0)
-//        let alpha = CGFloat(0.5)
-
         UIView.animate(withDuration: 0.3, delay: 0.3, options: .curveEaseOut, animations: {
             self.view.backgroundColor = UIColor.black.withAlphaComponent(0.7)
-
+            
         }, completion:nil)
     }
     
@@ -97,6 +91,7 @@ class commentsNewViewController: UIViewController,UITableViewDelegate,UITableVie
             self.cmntTxtfieldBackView.frame.origin.y = 0
         }
     }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return commentsArr.count
     }
@@ -110,8 +105,7 @@ class commentsNewViewController: UIViewController,UITableViewDelegate,UITableVie
         if self.commentsArr.count <= 0{
             self.noCommentLbl.isHidden = false
             
-            
-        }else{
+        } else {
             self.noCommentLbl.isHidden = true
             commentsCount.text = "\(commentsArr.count)" + " comments"
             
@@ -122,17 +116,14 @@ class commentsNewViewController: UIViewController,UITableViewDelegate,UITableVie
             cell.comment.text = cmnt
             cell.userImg.sd_setImage(with: URL(string:obj.imgName), placeholderImage: UIImage(named: "noUserImg"))
         }
-        
-        
-        return cell
+    return cell
     }
     
     //    MARK:- Get All Comments list
-    
     func getComents() {
         
         commentsArr.removeAll()
-        let url : String = self.appDelegate.baseUrl!+self.appDelegate.showVideoComments!
+        let url : String = self.appDelegate.baseUrl! + self.appDelegate.showVideoComments!
         //        let  sv = HomeViewController.displaySpinner(onView: self.out_view)
         //        UserDefaults.standard.object(forKey: "video_id")
         let parameter :[String:Any]? = ["video_id":video_id]
@@ -150,13 +141,10 @@ class commentsNewViewController: UIViewController,UITableViewDelegate,UITableVie
         AF.request(url, method: .post, parameters: parameter, encoding:JSONEncoding.default, headers:headers).validate().responseJSON(completionHandler: {
             
             respones in
-            
             switch respones.result {
             case .success( let value):
                 
                 let json  = value
-                
-                //                HomeViewController.removeSpinner(spinner: sv)
                 
                 self.commentsArr = []
                 print(json)
@@ -169,7 +157,7 @@ class commentsNewViewController: UIViewController,UITableViewDelegate,UITableVie
                     if allComments.count == 0{
                         self.loaderView.stopAnimating()
                         self.noCommentLbl.isHidden = false
-                    }else{
+                    } else {
                         self.loaderView.stopAnimating()
                     }
                     for Dict in allComments {
@@ -212,51 +200,31 @@ class commentsNewViewController: UIViewController,UITableViewDelegate,UITableVie
                         let userName = first_name + last_name
                         
                         print("time: ",c_time!)
-                        //                        let obj = Comment(comments: comments, first_name: first_name, last_name: last_name,profile_pic: profile_pic, v_id: v_id,c_time:c_time)
                         let obj = commentNew(id: "", userName: userName, userID: "", comment: comments, imgName: profile_pic, time: c_time, like: "", like_count: "", vidID: "")
                         
                         self.commentsArr.append(obj)
-
+                        
                     }
                     
-                    //                    self.comments_array = NSMutableArray(array: self.comments_array.reversed())
                     self.commentsArr = self.commentsArr.reversed()
-                    
-                    
                     self.commentsTableView.delegate = self
                     self.commentsTableView.dataSource = self
                     self.commentsTableView.reloadData()
-                    //                    if(self.commentsArr.count > 0){
-                    //                        DispatchQueue.main.async {
-                    //                            let indexPath = IndexPath(row: 0, section: 0)
-                    //                            self.commentsTableView.scrollToRow(at: indexPath, at: .top, animated: true)
-                    //                        }
-                    //                    }
                     
-                    
-                    
-                }else{
-                    
-                    //                    self.alertModule(title:"Error", msg:dic["msg"] as! String)
-                    
-                    print("Error",dic["msg"])
-                    
+                } else {
+                   print("Error",dic["msg"])
                 }
                 
             case .failure(let error):
                 print("failure err",error)
-                //                HomeViewController.removeSpinner(spinner: sv)
-                //                self.alertModule(title:"Error",msg:error.localizedDescription)
             }
         })
-        
-        
     }
     
     
     func newGetComments(){
         commentsArr.removeAll()
-        ApiHandler.sharedInstance.showVideoComments(video_id: self.video_id) { (isSuccess, response) in
+        ApiHandler.sharedInstance.showVideoComments(video_id: self.video_id, starting_point: "0", user_id: UserDefaults.standard.string(forKey: "userID") ?? "" ){ (isSuccess, response) in
             if isSuccess{
                 if response?.value(forKey: "code") as! NSNumber == 200 {
                     let allComments = response?.value(forKey: "msg") as! [[String:Any]]
@@ -281,31 +249,26 @@ class commentsNewViewController: UIViewController,UITableViewDelegate,UITableVie
                         
                         
                         let obj = commentNew(id: id, userName: "\(userName!)", userID: userID, comment: comment, imgName: "\(userIMG!)", time: time, like: "\(like!)", like_count: "\(like_count!)", vidID: vidID)
-                     
+                        
                         self.commentsArr.append(obj)
                         
                     }
                     
                     self.commentsArr = self.commentsArr.reversed()
-
+                    
                     self.commentsTableView.delegate = self
                     self.commentsTableView.dataSource = self
                     self.commentsTableView.reloadData()
                     
                 }else{
-                    
-                    //                    self.alertModule(title:"Error", msg:dic["msg"] as! String)
-                    
                     print("!200",response?.value(forKey: "msg"))
                     self.loaderView.stopAnimating()
                     self.noCommentLbl.isHidden = false
-                    
                 }
-                
             }
         }
-        
     }
+    
     //    MARK:- Dismiss click on anywhere on view
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -323,25 +286,10 @@ class commentsNewViewController: UIViewController,UITableViewDelegate,UITableVie
         let v = commentTxtField.inputAccessoryView as? IQToolbar
         v?.doneBarButton.tintColor = UIColor.clear
         v?.doneBarButton.isEnabled = false
-        
-        //        commentTxtField.inputAccessoryView = .none
     }
     
     //    MARK:- Textfield action on done/send
-    
     @IBAction func commentTxtFieldAction(_ sender: Any) {
-        print("Send pressed")
-        
-        //        let ud = UserDefaults.standard
-        //        let userImg = ud.object(forKey: "userImg")
-        //        let firstName = ud.object(forKey: "userFirstName")
-        //        let lastName = ud.object(forKey: "userLastName")
-        
-        print("userImg: ",userImg)
-        print("Fullname: ",userFullName)
-        //        print("lastName: ",lastName)
-        
-        
         let comment = commentTxtField.text
         guard let text = comment, !text.isEmpty else {
             showToast(message: "Enter a comment", font: .systemFont(ofSize: 14.0))
@@ -350,74 +298,42 @@ class commentsNewViewController: UIViewController,UITableViewDelegate,UITableVie
         print("comment guard:",text)  //do something if it's not empt
         
         let currentTime = Date()
-        //            let newComment = commentNew(userName: userFullName, comment: comment!, imgName: userImg, time: "\(currentTime)")
-        //            commentsArr.append(newComment)
-        //            commentsNewArr.append(newComment)
-        
         self.view.endEditing(true)
-//        updateCommentsOnServer(cmnt: comment!)
         newUpdateCommentsOnServer(cmnt: comment!)
         commentTxtField.placeholder = "Add comment..."
         commentTxtField.text = ""
-        
-        
-        
     }
+    
     //    MARK:- UPDATE COMMENTS
     func updateCommentsOnServer(cmnt:String){
-        //                     let obj = friends_array[index] as! Home
-        
         let url : String = self.appDelegate.baseUrl!+self.appDelegate.postComment!
         let headers: HTTPHeaders = [
             "api-key": "4444-3333-2222-1111"
         ]
-        //                     let  sv = HomeViewController.displaySpinner(onView: view)
-        
         self.loaderView.startAnimating()
         
         let parameter :[String:Any]? = ["fb_id":UserDefaults.standard.string(forKey: "uid")!,"video_id":self.video_id,"comment":cmnt]
         print(parameter!)
         
         AF.request(url, method: .post, parameters: parameter, encoding:JSONEncoding.default, headers:headers).validate().responseJSON(completionHandler: {
-            
             respones in
             
             switch respones.result {
             case .success( let value):
-                
                 let json  = value
-                //                                            HomeViewController.removeSpinner(spinner: sv)
                 self.loaderView.stopAnimating()
                 print(json)
                 let dic = json as! NSDictionary
                 let code = dic["code"] as! NSString
                 if(code == "200"){
-                    //                                              self.txt_comment.text = ""
-                    
-                    //                        var str:Int! = Int(obj.video_comment_count)
-                    //                        str = str+1
-                    //                        obj.video_comment_count = String(str)
-                    //                        cell.btn_comments.setTitle(obj.video_comment_count, for: .normal)
-                    
                     self.getComents()
                     print("Updated comments on server::,,,, done 200")
-                    
-                    
-                }else{
-                    
-                    //                                                self.alertModule(title:"Error", msg:dic["msg"] as! String)
-                    
-                }
-                
-                
+                } else {}
                 
             case .failure(let error):
                 print(error)
-                //                                            HomeViewController.removeSpinner(spinner: sv)
-                //                                            self.alertModule(title:"Error",msg:error.localizedDescription)
             }
         })
-        
     }
     
     func newUpdateCommentsOnServer(cmnt:String){
@@ -436,7 +352,7 @@ class commentsNewViewController: UIViewController,UITableViewDelegate,UITableVie
                     print("!200: ",response?.value(forKey: "msg"))
                 }
                 
-            }else{
+            } else {
                 self.showToast(message: err, font: .systemFont(ofSize: 12))
             }
             
@@ -445,21 +361,15 @@ class commentsNewViewController: UIViewController,UITableViewDelegate,UITableVie
     
     //    MARK:- FETCH USER INFO
     func getUserInfo(){
-        
         let url : String = self.appDelegate.baseUrl!+self.appDelegate.get_user_data!
         var userID = UserDefaults.standard.string(forKey: "userID")
         
         if userID == "" || userID == nil{
             userID = ""
         }
-        let parameter :[String:Any]? = ["fb_id":/*UserDefaults.standard.string(forKey: "uid")!*/userID!]
-        
-        print(url)
-        print(parameter!)
-        
+        let parameter: [String:Any]? = ["fb_id":/*UserDefaults.standard.string(forKey: "uid")!*/userID!]
         let headers: HTTPHeaders = [
             "api-key": "4444-3333-2222-1111"
-            
         ]
         
         AF.request(url, method: .post, parameters:parameter, encoding:JSONEncoding.default, headers:headers).validate().responseJSON(completionHandler: {
@@ -468,63 +378,28 @@ class commentsNewViewController: UIViewController,UITableViewDelegate,UITableVie
             case .success( let value):
                 
                 let json  = value
-                            
+                
                 print(json)
                 let dic = json as! NSDictionary
                 let code = dic["code"] as! NSString
                 if(code == "200"){
                     
                     if let myCountry = dic["msg"] as? NSArray{
-                        
-                        
                         if  let sectionData = myCountry[0] as? NSDictionary{
-                            
                             let firstName = sectionData["first_name"] as? String
                             let lastName = sectionData["last_name"] as? String
-                            //                            self.userFullName = (sectionData["username"] as? String)!
-                            //                            self.txt_first.text = self.first_name
-                            //                            self.txt_last.text = self.last_name
-                            //
                             self.userImg = (sectionData["profile_pic"] as? String)!
-                            //
-                            //                            self.user_img.sd_setImage(with: URL(string:(sectionData["profile_pic"] as? String)!), placeholderImage: UIImage(named: "nobody_m.1024x1024"))
-                            //
-                            //                            self.gender = sectionData["gender"] as? String
-                            //
-                            //                            if(self.gender == "Female"){
-                            //
-                            //                                self.empty_img.image = UIImage(named:"ic_rb_fill")
-                            //                                self.fill_img.image = UIImage(named:"ic_rb")
-                            //                                self.gender = "Female"
-                            //                            }else{
-                            //                                self.fill_img.image = UIImage(named:"ic_rb_fill")
-                            //                                self.empty_img.image = UIImage(named:"ic_rb")
-                            //                                self.gender = "Male"
-                            //                            }
-                            //
-                            //                            self.txt_bio.text = sectionData["bio"] as? String
-                            //
                             self.userFullName = "\(firstName ?? "")\(lastName ?? "")"
                         }
                     }
-                    
-                }else{
-                    
-                    //                    self.alertModule(title:"Error", msg:dic["msg"] as! String)
+                } else {
                     print("unable to fetch user data",dic["msg"] as! String)
                 }
                 
-                
-                
             case .failure(let error):
                 print(error)
-                print("unable to fetch user data")
-                //                HomeViewController.removeSpinner(spinner: sv)
-                //                self.alertModule(title:"Error",msg:error.localizedDescription)
             }
         })
-        
-        
     }
     
     
@@ -539,7 +414,6 @@ class commentsNewViewController: UIViewController,UITableViewDelegate,UITableVie
         print("minutes: ",minutes)
         print("time current data: ",date)
         
-        
         let cmntTime = commentsArr[ind.row].time
         print("cmntTime: ",cmntTime)
         
@@ -548,33 +422,22 @@ class commentsNewViewController: UIViewController,UITableViewDelegate,UITableVie
         
         
         let previousDate = "\(cmntTime) +0000"
-        //        let currentDate = Date()
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
         let previousDateFormated : Date? = dateFormatter.date(from: previousDate)
-        //        let difference = currentDate.timeIntervalSince(previousDateFormated!)
-        //        var differenceInDays = Int(difference/(60 * 60 * 24 ))
-        //        print("difference from now: ",differenceInDays)
         print("previousDateFormated: ",previousDateFormated)
-        
-        
         previousDateFormated?.days(from: date)
         print("new time interval in minutes : ",previousDateFormated?.days(from: date))
-        //        let finaldate = date.daysTo(Date(dat))
-        //        print("final date: ",finaldate)
         
         let timeAgo = timeDiff(privTime: previousDateFormated!)
         print("Time Ago:- ",timeAgo)
-        
         return "\(timeAgo)"
-        
     }
+    
     //    MARK:- Dismiss keyboard
-    
-    
     @IBAction func btnCross(_ sender: Any) {
         NotificationCenter.default.post(name: Notification.Name("reloadVidDetails"), object: nil)
-
+        
         self.view.backgroundColor = UIColor.black.withAlphaComponent(0.0)
         dismiss(animated: true, completion: nil)
     }
@@ -625,7 +488,6 @@ class commentsNewViewController: UIViewController,UITableViewDelegate,UITableVie
         
         return "Just Now"
     }
-    
 }
 
 
@@ -719,7 +581,6 @@ extension UIViewController {
     func showToast(message : String, font: UIFont) {
         
         let toastLabel = UILabel(frame: CGRect(x: self.view.frame.size.width/2 - 175, y: self.view.frame.size.height*0.12, width: 350, height: 40))
-        //    toastLabel.backgroundColor = UIColor.black.withAlphaComponent(0.6)
         toastLabel.backgroundColor = #colorLiteral(red: 0.3129099309, green: 0.3177284598, blue: 0.3219906092, alpha: 0.8590539384)
         toastLabel.textColor = UIColor.white
         toastLabel.font = font
@@ -736,5 +597,3 @@ extension UIViewController {
         })
     }
 }
-    
-

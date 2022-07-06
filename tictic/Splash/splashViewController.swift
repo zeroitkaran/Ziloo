@@ -115,7 +115,7 @@ class splashViewController: UIViewController {
     
     func settingUDID(){
         let uid = UIDevice.current.identifierForVendor!.uuidString
-        ApiHandler.sharedInstance.registerDevice(key: uid) { (err,isSuccess,response) in
+        ApiHandler.sharedInstance.registerDevice(key: uid) { (err, isSuccess,response) in
             if isSuccess{
                 if response?.value(forKey: "code") as! NSNumber == 200 {
                     
@@ -133,37 +133,12 @@ class splashViewController: UIViewController {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                         self.getAllVideos(relatedVideo:self.videosRelatedArr,isVideoEmpty:false)
                     }
-                }else{
+                } else {
                    print("response 201: ",response!)
                    self.getAllVideos(relatedVideo:self.videosRelatedArr,isVideoEmpty:false)
-                 //   self.showToast(message: response?.value(forKey: "msg") as! String, font: .systemFont(ofSize: 12.0))
-                  /*   ApiHandler.sharedInstance.showDeviceDetails(key: uid) { (isSuccess, response) in
-                        if isSuccess{
-                            if response?.value(forKey: "code") as! NSNumber == 200 {
-                                
-                                let msg = response?.value(forKey: "msg") as! NSDictionary
-                                let device = msg.value(forKey: "Device") as! NSDictionary
-                                let key = device.value(forKey: "key") as! String
-                                let deviceID = device.value(forKey: "id") as! String
-                                print("device id: ",deviceID)
-                                
-                                UserDefaults.standard.set(key, forKey: "deviceKey")
-                                UserDefaults.standard.set(deviceID, forKey: "deviceID")
-                                
-                                print("deviceKey: ", key)
-                                print("response@200: ",response!)
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                    self.getAllVideos(relatedVideo:self.videosRelatedArr,isVideoEmpty:false)
-                                }
-                            }else{
-                                self.showToast(message: response?.value(forKey: "msg") as! String, font: .systemFont(ofSize: 12.0))
-                            }
-                        }
-                    }*/
                 }
-            }else{
+            } else {
                 self.showToast(message: err, font: .systemFont(ofSize: 12))
-
                 print("Something went wrong in API registerDevice: ",response!)
             }
         }

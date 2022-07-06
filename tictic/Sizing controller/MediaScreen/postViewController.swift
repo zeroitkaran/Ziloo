@@ -83,7 +83,7 @@ class postViewController: UIViewController,UITextViewDelegate {
         
         let hashtags = describeTextView.text.hashtags()
         let mentions = describeTextView.text.mentions()
-
+        
         var newHashtags = [[String:String]]()
         var newMentions = [[String:String]]()
         
@@ -95,13 +95,11 @@ class postViewController: UIViewController,UITextViewDelegate {
         }
         
         AppUtility?.startLoader(view: self.view)
-        //        let  sv = HomeViewController.displaySpinner(onView: self.view)
         if(UserDefaults.standard.string(forKey: "sid") == nil || UserDefaults.standard.string(forKey: "sid") == ""){
             
             UserDefaults.standard.set("null", forKey: "sid")
         }
         
-        //        let url : String = self.appDelegate.baseUrl!+self.appDelegate.uploadMultipartVideo!
         let url : String = ApiHandler.sharedInstance.baseApiPath+"postVideo"
         
         let cmnt = self.allowComments
@@ -110,19 +108,10 @@ class postViewController: UIViewController,UITextViewDelegate {
         var des = self.desc
         if describeTextView.text != "Describe your video" {
             des = describeTextView.text
-        }else{
+        } else {
             des = ""
         }
-        
-        print("cmnt",cmnt)
-        print("allwDuet",allwDuet)
-        print("prv",prv)
-        print("des",des)
-        print("hashtags",hashtags)
-        print("mentions",mentions)
-        
-        
-        let parameter :[String:Any]? = ["user_id"       : UserDefaults.standard.string(forKey: "userID")!,
+        let parameter: [String:Any]? = ["user_id"       : UserDefaults.standard.string(forKey: "userID")!,
                                         "sound_id"      : 0,
                                         "description"   : des,
                                         "privacy_type"  : prv,
@@ -133,15 +122,12 @@ class postViewController: UIViewController,UITextViewDelegate {
                                         "video_id"      : 0
         ]
         
-        let uidString = UserDefaults.standard.string(forKey: "userID")!
-        let soundIDString = "null"
-        
-        print(url)
-        print(parameter!)
         let headers: HTTPHeaders = [
             "Api-Key":API_KEY
         ]
-        let serializer = DataResponseSerializer(emptyResponseCodes: Set([200, 204, 205]))
+        
+        print("parameter \(parameter)")
+        print("headers \(headers)")
         AF.upload(multipartFormData: { MultipartFormData in
             
             if (!JSONSerialization.isValidJSONObject(parameter)) {
@@ -160,55 +146,54 @@ class postViewController: UIViewController,UITextViewDelegate {
             
             
         }, to: url, method: .post, headers: headers)
-            .responseJSON { (response) in
-                switch response.result{
+        .responseJSON { (response) in
+            switch response.result{
+                
+            case .success(let value):
+                print("progress: ",Progress.current())
+                let json = value
+                let dic = json as! NSDictionary
+                
+                print("response:- ",response)
+                if(dic["code"] as! NSNumber == 200){
+                    print("200")
+                    debugPrint("SUCCESS RESPONSE: \(response)")
                     
-                case .success(let value):
-                    print("progress: ",Progress.current())
-                    let json = value
-                    let dic = json as! NSDictionary
-                    
-                    print("response:- ",response)
-                    if(dic["code"] as! NSNumber == 200){
-                        print("200")
-                        debugPrint("SUCCESS RESPONSE: \(response)")
-                        
-                        if self.saveV == "1"{
-                            self.saveVideoToAlbum(self.videoUrl!) { (err) in
-                                
-                                if err != nil{
-                                    print("Unable to save video to album dur to: ",err!)
-                                    self.showToast(message: "Unable to save video to album dur to:", font: .systemFont(ofSize: 12))
-                                }else{
-                                    print("video saved to gallery")
-                                    self.showToast(message: "video saved to gallery", font: .systemFont(ofSize: 12))
-                                }
-                                
+                    if self.saveV == "1" {
+                        self.saveVideoToAlbum(self.videoUrl!) { (err) in
+                            
+                            if err != nil {
+                                print("Unable to save video to album dur to: ",err!)
+                                self.showToast(message: "Unable to save video to album dur to:", font: .systemFont(ofSize: 12))
+                            } else {
+                                print("video saved to gallery")
+                                self.showToast(message: "video saved to gallery", font: .systemFont(ofSize: 12))
                             }
+                            
                         }
-                        AppUtility?.stopLoader(view: self.view)
-                        print("Dict: ",dic)
-                        self.view.window!.rootViewController?.dismiss(animated: false, completion: nil)
-                        
-                        
-                    }else{
-                        AppUtility?.stopLoader(view: self.view)
-                        self.view.window!.rootViewController?.dismiss(animated: false, completion: nil)
-                        print(dic)
-                        
                     }
-                case .failure(let error):
                     AppUtility?.stopLoader(view: self.view)
-                    print("\n\n===========Error===========")
-                    print("Error Code: \(error._code)")
-                    print("Error Messsage: \(error.localizedDescription)")
-                    if let data = response.data, let str = String(data: data, encoding: String.Encoding.utf8){
-                        print("Server Error: " + str)
-                    }
-                    debugPrint(error as Any)
-                    print("===========================\n\n")
-            
+                    print("Dict: ",dic)
+                    self.view.window!.rootViewController?.dismiss(animated: false, completion: nil)
+                    
+                } else {
+                    AppUtility?.stopLoader(view: self.view)
+                    self.view.window!.rootViewController?.dismiss(animated: false, completion: nil)
+                    print(dic)
+                    
                 }
+            case .failure(let error):
+                AppUtility?.stopLoader(view: self.view)
+                print("\n\n===========Error===========")
+                print("Error Code: \(error._code)")
+                print("Error Messsage: \(error.localizedDescription)")
+                if let data = response.data, let str = String(data: data, encoding: String.Encoding.utf8){
+                    print("Server Error: " + str)
+                }
+                debugPrint(error as Any)
+                print("===========================\n\n")
+                
+            }
         }
     }
         
