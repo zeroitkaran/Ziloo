@@ -1,10 +1,4 @@
-//
-//  discoverSearchViewController.swift
-//  TIK TIK
-//
-//  Created by Mac on 07/11/2020.
-//  Copyright © 2020 Mac. All rights reserved.
-//
+
 
 import UIKit
 import SDWebImage
@@ -114,7 +108,7 @@ class discoverSearchViewController: UIViewController,UISearchBarDelegate {
         print("searchText: ",searchText)
         var txt = searchText
         if searchText.count == 0{
-            txt = "  "
+            txt = ""
         }
         //        getUserData(keyword: txt)
     }
@@ -126,7 +120,7 @@ class discoverSearchViewController: UIViewController,UISearchBarDelegate {
         var txt = searchBar.text
         
         if txt!.isEmpty{
-            txt = "  "
+            txt = ""
         }
         if let cancelButton = searchBar.value(forKey: "cancelButton") as? UIButton{
             cancelButton.isEnabled = true
@@ -240,7 +234,7 @@ class discoverSearchViewController: UIViewController,UISearchBarDelegate {
                         
                         let userID = userObj.value(forKey: "id") as! String
                         let username = userObj.value(forKey: "username") as! String
-                        let userOnline = userObj.value(forKey: "online") as! String
+                        let userOnline = userObj.value(forKey: "online") as? String
                         let userImg = userObj.value(forKey: "profile_pic") as! String
                         //                        let followBtn = userObj.value(forKey: "button") as! String
                         let verified = userObj.value(forKey: "verified")

@@ -26,7 +26,7 @@ class TabbarViewController: UITabBarController,UITabBarControllerDelegate {
         self.tabBar.unselectedItemTintColor = UIColor.white
         UITabBar.appearance().barTintColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         
-        self.addCenterButtonNew(withImage: UIImage(named: "33")!, highlightImage: UIImage(named: "33")!)
+        self.addCenterButtonNew(withImage: UIImage(named: "ic_add_white-1")!, highlightImage: UIImage(named: "ic_add_white-1")!)
         
     }
     
@@ -73,7 +73,7 @@ class TabbarViewController: UITabBarController,UITabBarControllerDelegate {
     // Add Custom video making button in tabbar
     private func addCenterButton() {
         
-        button.setImage(UIImage(named: "33"), for: .normal)
+        button.setImage(UIImage(named: "ic_add_white-1"), for: .normal)
         let square = self.tabBar.frame.size.height
         button.frame = CGRect(x: 0, y: 0, width: square, height: square)
         button.center = self.tabBar.center
