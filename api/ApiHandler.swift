@@ -14,8 +14,8 @@ import Alamofire
 var BASE_URL = "http://ziloo.live/"
 let API_KEY = "53aee794-c376-49f8-8df9-5df6e9668bee"
 let profileQRLink = BASE_URL+"profile/"
-let API_BASE_URL = BASE_URL+"api/"
-
+let API_BASE_URL = BASE_URL+"webapp/api/"
+let bucket_API = "https://ziloobucket.s3.ap-south-1.amazonaws.com"
 
 
 
@@ -96,8 +96,7 @@ enum Endpoint : String {
 
 }
 class ApiHandler:NSObject{
-    var baseApiPath:String!
-    
+    var baseApiPath:String!    
     let fcm = UserDefaults.standard.string(forKey: "DeviceToken") as? String ?? ""
     let ip = UserDefaults.standard.string(forKey: "ipAddress") as? String ?? ""
     let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0"

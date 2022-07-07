@@ -45,7 +45,7 @@ class HomeVideoViewController: UIViewController,videoLikeDelegate,UICollectionVi
         NotificationCenter.default.addObserver(self, selector: #selector(self.methodOfReceivedNotification(notification:)), name: Notification.Name("errInPlay"), object: nil)
         self.relatedButton()
         self.setupView()
-        
+        self.btnLiveUser.isHidden = true
     }
     
     // MARK:- viewWillDisappear

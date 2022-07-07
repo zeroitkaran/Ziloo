@@ -146,8 +146,9 @@ class testSoundViewController: UIViewController,UICollectionViewDelegate,UIColle
                             let created = soundsData.value(forKey: "created") as! String
                             let favourite = soundsData.value(forKey: "favourite")
                             let publish = soundsData.value(forKey: "publish")  as! String
+                            let type = soundsData.value(forKey: "type") as? String
                             
-                            let soundObj = soundsMVC(id: id, audioURL: audioUrl, duration: duration, name: name, description: description, thum: thum, section: section, uploaded_by: uploaded_by, created: created, favourite: "\(favourite!)", publish: publish)
+                            let soundObj = soundsMVC(id: id, audioURL: audioUrl, duration: duration, name: name, description: description, thum: thum, section: section, uploaded_by: uploaded_by, created: created, favourite: "\(favourite!)", publish: publish, type: type ?? "")
                             
                             soundsArr.append(soundObj)
                         }

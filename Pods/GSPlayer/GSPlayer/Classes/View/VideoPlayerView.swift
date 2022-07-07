@@ -163,10 +163,48 @@ open class VideoPlayerView: UIView {
     /// Play a video of the specified url.
     ///
     /// - Parameter url: Can be a local or remote URL
-    open func play(for url: URL) {
+    open func play(for url: URL,filterName:String,filterIndex:Int) {
+        
         guard playerURL != url else {
-            pausedReason = .waitingKeepUp
-            player?.play()
+            if(filterName != ""){
+                
+                let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+                let savedoutputURL = documentsDirectory.appendingPathComponent("Filterd.mov")
+                try? FileManager.default.removeItem(at: savedoutputURL)
+
+                player?.currentItem?.videoComposition = AVVideoComposition(asset: (player?.currentItem!.asset)!, applyingCIFiltersWithHandler: { request in
+                    let source = request.sourceImage.clampedToExtent()
+                    let filter = CIFilter(name:filterName)!
+                    filter.setDefaults()
+                    filter.setValue(source, forKey: kCIInputImageKey)
+                    let output = filter.outputImage!
+                    request.finish(with:output, context: nil)
+                   })
+                
+                let export = AVAssetExportSession(asset: (player?.currentItem!.asset)!, presetName: AVAssetExportPresetHighestQuality)
+                    export!.outputFileType = AVFileType.mov
+                    export!.outputURL = savedoutputURL
+                    export!.videoComposition = player?.currentItem?.videoComposition
+
+                    export?.exportAsynchronously(completionHandler: {
+
+                        if export!.status.rawValue == 4 {
+                            print("Export failed -> Reason: \(export?.error!.localizedDescription))")
+                            print(export?.error!)
+                            return
+                        }
+                        print("done: ", savedoutputURL)
+                        self.playerURL! = savedoutputURL
+
+                        print("PlayerURL", self.playerURL)
+                    })
+                
+
+            }else{
+                pausedReason = .waitingKeepUp
+                self.player?.play()
+            }
+            
             return
         }
         

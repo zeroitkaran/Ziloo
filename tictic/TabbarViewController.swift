@@ -1,13 +1,5 @@
-//
-//  TabbarViewController.swift
-//  TIK TIK
-//
-//  Created by Mac on 24/04/2019.
-//  Copyright © 2019 Mac. All rights reserved.
-//
 
 import UIKit
-
 
 @available(iOS 13.0, *)
 class TabbarViewController: UITabBarController,UITabBarControllerDelegate {
@@ -63,11 +55,6 @@ class TabbarViewController: UITabBarController,UITabBarControllerDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.view.bringSubviewToFront(self.tabBar)
-        //        MARK:- JK
-        
-        //        self.addCenterButton()
-        
-        
     }
     
     // Add Custom video making button in tabbar
@@ -93,16 +80,7 @@ class TabbarViewController: UITabBarController,UITabBarControllerDelegate {
                         
             newLoginScreenAppear()
         }else{
-            
-            
-            //            let vc = ActionViewContoller()
-            //           vc.modalPresentationStyle = .fullScreen
-            //
-            //
-            //            self.present(vc, animated: true, completion: nil)
-            //
-            
-            //            MARK:- JK
+           
             
             let vc1 = storyboard?.instantiateViewController(withIdentifier: "actionMediaVC") as! actionMediaViewController
             UserDefaults.standard.set("", forKey: "url")
@@ -122,11 +100,7 @@ class TabbarViewController: UITabBarController,UITabBarControllerDelegate {
         
         
         if tabBarIndex == 0{
-            
-            print("index@0")
-            // self.tabBar.isTranslucent = true
-            // UITabBar.appearance().shadowImage = UIImage()
-            // UITabBar.appearance().backgroundImage = UIImage()
+        
             tabBar.barTintColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
             self.tabBar.unselectedItemTintColor = UIColor.white
             
@@ -141,11 +115,6 @@ class TabbarViewController: UITabBarController,UITabBarControllerDelegate {
         }else{
             tabBar.barTintColor = UIColor.white
             self.tabBar.unselectedItemTintColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
-            //            button.setImage(UIImage(named: "28"), for: .normal)
-            //            self.bgView?.alpha = 0
-            //you might need to modify this frame to your tabbar frame
-            //            self.bgView?.removeFromSuperview()
-            
             homeTouchCount = 0
             
         }
@@ -171,30 +140,12 @@ class TabbarViewController: UITabBarController,UITabBarControllerDelegate {
     
     @objc func handleTouchTabbarCenter(sender : UIButton)
     {
-        /*
-         if let count = self.tabBar.items?.count
-         {
-         let i = floor(Double(count / 2))
-         self.selectedViewController = self.viewControllers?[Int(i)]
-         print("i:- ",i)
-         
-         }
-         */
-        
+  
         if(UserDefaults.standard.string(forKey: "userID") == "" || UserDefaults.standard.string(forKey: "userID") == nil){
                         
             newLoginScreenAppear()
         }else{
-            
-            
-            //            let vc = ActionViewContoller()
-            //           vc.modalPresentationStyle = .fullScreen
-            //
-            //
-            //            self.present(vc, animated: true, completion: nil)
-            //
-            
-            //            MARK:- JK
+        
             let vc1 = storyboard?.instantiateViewController(withIdentifier: "actionMediaVC") as! actionMediaViewController
             UserDefaults.standard.set("", forKey: "url")
             vc1.modalPresentationStyle = .fullScreen
@@ -208,13 +159,13 @@ class TabbarViewController: UITabBarController,UITabBarControllerDelegate {
         
         if !DeviceType.iPhoneWithHomeButton{
             
-            paddingBottom = 4.0
+            paddingBottom = -6.0
         }
         
         
         let button = UIButton(type: .custom)
         button.autoresizingMask = [.flexibleRightMargin, .flexibleTopMargin, .flexibleLeftMargin, .flexibleBottomMargin]
-        button.frame = CGRect(x: 0.0, y: 0.0, width: buttonImage.size.width , height: buttonImage.size.height)
+        button.frame = CGRect(x: 0.0, y: 0.0, width: buttonImage.size.width - 2, height: buttonImage.size.height + 30)
         button.setBackgroundImage(buttonImage, for: .normal)
         button.setBackgroundImage(highlightImage, for: .highlighted)
         

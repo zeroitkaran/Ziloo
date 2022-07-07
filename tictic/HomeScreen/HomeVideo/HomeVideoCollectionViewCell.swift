@@ -177,25 +177,44 @@ class HomeVideoCollectionViewCell: UICollectionViewCell {
     }
     
     
+//    func replay(){
+//        if !isPlaying {
+////            playerView.play(for: NSURL(string: self.arrVideo!.videoURL ) as! URL,filterName:"",filterIndex:0)
+//            playerView.play(for: NSURL(string: self.arrVideo!.videoURL )! as URL)
+//
+//
+//            play()
+//        }
+//    }
+//
+//    func play() {
+//        musicLbl.holdScrolling = false
+////        playerView.play(for: NSURL(string: (self.arrVideo!.videoURL)) as! URL,filterName:"",filterIndex:0)
+//
+//        playerView.play(for: NSURL(string: (self.arrVideo!.videoURL))! as URL )
+//
+//        playerView.isHidden = false
+//        isPlaying =  true
+//    }
+    
+    
+    
     func replay(){
         if !isPlaying {
-//            playerView.play(for: NSURL(string: self.arrVideo!.videoURL ) as! URL,filterName:"",filterIndex:0)
-            playerView.play(for: NSURL(string: self.arrVideo!.videoURL )! as URL)
-            
-            
+            playerView.play(for: NSURL(string: self.arrVideo!.videoURL ) as! URL,filterName:"",filterIndex:0)
             play()
         }
     }
     
     func play() {
+    
         musicLbl.holdScrolling = false
-//        playerView.play(for: NSURL(string: (self.arrVideo!.videoURL)) as! URL,filterName:"",filterIndex:0)
-        
-        playerView.play(for: NSURL(string: (self.arrVideo!.videoURL))! as URL )
-        
+        playerView.play(for: NSURL(string: self.arrVideo!.videoURL) as! URL,filterName:"",filterIndex:0)
         playerView.isHidden = false
         isPlaying =  true
     }
+    
+    
     
     func pause(){
         playerView.pause(reason: .hidden)

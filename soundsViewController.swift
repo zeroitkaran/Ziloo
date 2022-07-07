@@ -405,8 +405,9 @@ class soundsViewController: UIViewController,UITableViewDataSource,UITableViewDe
                         let created = soundObj.value(forKey: "created") as! String
                         //                        let favourite = soundObj.value(forKey: "favourite")
                         let publish = soundObj.value(forKey: "publish") as! String
+                        let type = soundObj.value(forKey: "type") as? String
                         
-                        let obj = soundsMVC(id: id, audioURL: audioUrl, duration: duration, name: name, description: description, thum: thum, section: section, uploaded_by: uploaded_by, created: created, favourite: "", publish: publish)
+                        let obj = soundsMVC(id: id, audioURL: audioUrl, duration: duration, name: name, description: description, thum: thum, section: section, uploaded_by: uploaded_by, created: created, favourite: "", publish: publish, type: type ?? "")
                         
                         self.favSoundDataArr.append(obj)
                     }
@@ -474,8 +475,9 @@ class soundsViewController: UIViewController,UITableViewDataSource,UITableViewDe
                             let created = soundsData.value(forKey: "created") as! String
                             let favourite = soundsData.value(forKey: "favourite")
                             let publish = soundsData.value(forKey: "publish")  as! String
+                            let type = soundsData.value(forKey: "type") as? String
                             
-                            let soundObj = soundsMVC(id: id, audioURL: audioUrl, duration: duration, name: name, description: description, thum: thum, section: section, uploaded_by: uploaded_by, created: created, favourite: "\(favourite!)", publish: publish)
+                            let soundObj = soundsMVC(id: id, audioURL: audioUrl, duration: duration, name: name, description: description, thum: thum, section: section, uploaded_by: uploaded_by, created: created, favourite: "\(favourite!)", publish: publish, type: type ?? "")
                             
                             soundsArr.append(soundObj)
                         }

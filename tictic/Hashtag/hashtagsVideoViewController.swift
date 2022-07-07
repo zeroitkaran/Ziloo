@@ -35,7 +35,8 @@ class hashtagsVideoViewController: UIViewController {
         for title in hashtagTitle{
             title.text = hashtag
         }
-        getHashtagDataAPI(hashtag: hashtag,starting_point: "\(self.pageNumber)")
+        getHashtagDataAPI(hashtag: hashtag,starting_point: "\(self.pageNumber)")  
+        videosCV.contentInset = UIEdgeInsets(top: 10, left: 15, bottom: 10, right: 10)
         
     }
     

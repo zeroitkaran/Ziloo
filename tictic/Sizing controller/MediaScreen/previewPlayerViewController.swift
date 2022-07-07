@@ -29,7 +29,7 @@ class previewPlayerViewController: UIViewController,PlayerDelegate{
     fileprivate var playerItem: AVPlayerItem!
     fileprivate var video: AVURLAsset?
     fileprivate var originalImage: UIImage?
-    var url:URL?
+    var url: URL?
     
     
     internal let filterNameList = [
@@ -72,6 +72,7 @@ class previewPlayerViewController: UIViewController,PlayerDelegate{
         "Transfer",
         "Tone",
         "Linear",
+        
         "Clamp",
         "Matrix",
         "Polynomial",
@@ -119,8 +120,7 @@ class previewPlayerViewController: UIViewController,PlayerDelegate{
         btnPlayImg.isHidden = true
         
         playerView.contentMode = .scaleAspectFill
-       //playerView.play(for: url!,filterName:"",filterIndex:0)
-        playerView.play(for: url!)
+        playerView.play(for: url!,filterName:"",filterIndex:0)
         
         self.video = AVURLAsset(url: self.url!)
         self.image = video!.videoToUIImage()
@@ -165,8 +165,7 @@ class previewPlayerViewController: UIViewController,PlayerDelegate{
     }
     @IBAction func btnNext(_ sender: Any) {
         print("next pressed")
-        playerView.pause(reason: .hidden)
-        //        saveVideo(withURL: url!)
+        playerView.pause(reason: .hidden)       
         let vc = storyboard?.instantiateViewController(withIdentifier: "postVC") as! postViewController
         vc.videoUrl = self.playerView.playerURL
         vc.modalPresentationStyle = .fullScreen
@@ -279,9 +278,7 @@ extension previewPlayerViewController:UICollectionViewDataSource,UICollectionVie
             self.originalImage = createFilteredImage(filterName: filterName, image: image)
         }*/
       //  if let video = self.video {
-           // playerView.play(for: url!,filterName:filtername,filterIndex:filterIndex)
-        
-        playerView.play(for: url!)
+            playerView.play(for: url!,filterName:filtername,filterIndex:filterIndex)
       //  }
         
     }

@@ -19,6 +19,7 @@ struct soundsMVC {
     let created:String
     let favourite:String
     let publish:String
+    let type:String
     
     
 }

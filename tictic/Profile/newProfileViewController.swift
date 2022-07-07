@@ -93,7 +93,7 @@ class newProfileViewController: UIViewController,UICollectionViewDataSource, UIC
         
         print("Search User ID: \(self.otherUserID)")
         self.fetchSuggestedPeopleAPI()
-        btnLive.isHidden =  true
+        self.btnLive.isHidden =  true
         setupDropDowns()
         self.suggestionViewHeight.constant = 0
         self.viewSuggestion.isHidden = true
@@ -117,7 +117,7 @@ class newProfileViewController: UIViewController,UICollectionViewDataSource, UIC
         
         suggestionsCollectionView.dataSource =  self
         print("count: ",userItem.count)
-        
+       
     }
     
     @objc
@@ -196,7 +196,7 @@ class newProfileViewController: UIViewController,UICollectionViewDataSource, UIC
             self.OtherUserFollowView.isHidden =  true
             self.btnShowSuggetions.setImage(UIImage(named: "9"), for: .normal)
             btnBackOutlet.isHidden = true
-            btnLive.isHidden = false
+          //  btnLive.isHidden = false
             self.otherUserID = ""
           //  getUserVideos()
             let lpgr : UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPressVideo))

@@ -11,13 +11,19 @@ import UIKit
 class NewSettingsPrivacyViewController: UIViewController {
     @IBOutlet weak var tblPrivacy: UITableView!
     
+//    var arrAccount = [["name":"Manage Account","image":"2-2"],
+//                      ["name":"Privacy","image":"ic_privacy"],
+//                      ["name":"Request Verification","image":"ic_verify_request-1"],
+//                      ["name":"Balance","image":"8-8"],
+//                      ["name":"Payout Setting","image":"ic_payout_setting"],
+//                      ["name":"QR Code","image":"10-10"]]
+    
+    
+    
     var arrAccount = [["name":"Manage Account","image":"2-2"],
                       ["name":"Privacy","image":"ic_privacy"],
-                      ["name":"Request Verification","image":"ic_verify_request-1"],
-                      ["name":"Balance","image":"8-8"],
-                      ["name":"Payout Setting","image":"ic_payout_setting"],
+                      ["name":"Request Verification","image":"ic_verify_request-1"],                       
                       ["name":"QR Code","image":"10-10"]]
-    
     
     var arrContentActivity = [["name":"Push Notification","image":"1-1"],
                     ["name":"App Lanuage","image":"3-3"]]

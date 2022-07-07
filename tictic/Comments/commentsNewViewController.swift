@@ -31,6 +31,8 @@ class commentsNewViewController: UIViewController, UITableViewDelegate,UITableVi
     var userFullName = ""
     var arrVideo :videoMainMVC?
     var index = 0
+    var stringVal = 0
+    var stringcount = "0"
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -101,7 +103,7 @@ class commentsNewViewController: UIViewController, UITableViewDelegate,UITableVi
         
         let time = timeMange(ind: indexPath)
         print("Time in tableview: ",time)
-        
+        stringcount = String(stringVal+1)        
         if self.commentsArr.count <= 0{
             self.noCommentLbl.isHidden = false
             
@@ -224,7 +226,8 @@ class commentsNewViewController: UIViewController, UITableViewDelegate,UITableVi
     
     func newGetComments(){
         commentsArr.removeAll()
-        ApiHandler.sharedInstance.showVideoComments(video_id: self.video_id, starting_point: "0", user_id: UserDefaults.standard.string(forKey: "userID") ?? "" ){ (isSuccess, response) in
+        
+        ApiHandler.sharedInstance.showVideoComments(video_id: self.video_id, starting_point: stringcount, user_id: UserDefaults.standard.string(forKey: "userID") ?? "" ){ (isSuccess, response) in
             if isSuccess{
                 if response?.value(forKey: "code") as! NSNumber == 200 {
                     let allComments = response?.value(forKey: "msg") as! [[String:Any]]

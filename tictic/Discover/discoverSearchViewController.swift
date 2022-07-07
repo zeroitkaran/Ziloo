@@ -289,8 +289,9 @@ class discoverSearchViewController: UIViewController,UISearchBarDelegate {
                         let created = soundObj.value(forKey: "created") as? String
                         let favourite = soundObj.value(forKey: "favourite")
                         let publish = soundObj.value(forKey: "publish") as? String
+                        let type = soundObj.value(forKey: "type") as? String
                         
-                        let obj = soundsMVC(id: id ?? "", audioURL: audioUrl ?? "", duration: duration ?? "", name: name ?? "", description: description ?? "", thum: thum ?? "", section: section ?? "", uploaded_by: uploaded_by ?? "", created: created ?? "", favourite: "\(favourite ?? "")", publish: publish ?? "")
+                        let obj = soundsMVC(id: id ?? "", audioURL: audioUrl ?? "", duration: duration ?? "", name: name ?? "", description: description ?? "", thum: thum ?? "", section: section ?? "", uploaded_by: uploaded_by ?? "", created: created ?? "", favourite: "\(favourite ?? "")", publish: publish ?? "", type: type ?? "")
                         
                         self.soundsDataArr.append(obj)
                     }
